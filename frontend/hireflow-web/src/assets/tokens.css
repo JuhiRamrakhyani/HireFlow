@@ -1,0 +1,116 @@
+:root{
+  --ink:#14161F; --paper:#FAF9F6; --card:#FFFFFF; --border:#E6E2D8;
+  --coral:#FF5D3E; --coral-dim:#FFE7E0; --teal:#0F5C56; --teal-dim:#E1F1EF;
+  --mint:#2FBF8F; --mint-dim:#E3F7EE; --amber:#E8A33D; --amber-dim:#FCF0DC;
+  --violet:#7C5CFF; --violet-dim:#EFEBFF; --sky:#2F9BEB; --sky-dim:#E3F1FD;
+  --pink:#E84A8A; --pink-dim:#FDE9F1;
+  --muted:#6B6A63; --nav:#12141C; --radius:14px;
+  --disp:'Space Grotesk',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+  --ease-out:cubic-bezier(.22,.9,.24,1); --ease-pop:cubic-bezier(.34,1.56,.64,1);
+  --grad-coral:linear-gradient(135deg,#FF5D3E,#FF8A63);
+  --grad-teal:linear-gradient(135deg,#0F5C56,#2FBF8F);
+  --grad-violet:linear-gradient(135deg,#7C5CFF,#B3A0FF);
+  --grad-sky:linear-gradient(135deg,#2F9BEB,#7CC6FF);
+  --grad-amber:linear-gradient(135deg,#E8A33D,#FFD28A);
+  --shadow-pop:0 10px 30px rgba(20,22,31,.10);
+  --shadow-lift:0 6px 16px rgba(20,22,31,.06);
+}
+
+/* Registers --pct as a transitionable custom property so conic-gradient
+   match rings can animate their percentage instead of jumping instantly. */
+@property --pct { syntax:'<number>'; initial-value:0; inherits:false; }
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;}
+a{color:inherit;text-decoration:none;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;}
+.btn{padding:8px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:var(--body);transition:transform .15s var(--ease-pop),box-shadow .18s,background .18s,color .18s;}
+.btn:active{transform:scale(.96);}
+.btn-primary{background:var(--ink);color:#fff;}
+.btn-primary:hover{box-shadow:0 6px 16px rgba(20,22,31,.22);transform:translateY(-1px);}
+.btn-coral{background:var(--grad-coral);color:#fff;}
+.btn-coral:hover{box-shadow:0 6px 16px rgba(255,93,62,.35);transform:translateY(-1px);}
+.btn-teal{background:var(--grad-teal);color:#fff;}
+.btn-teal:hover{box-shadow:0 6px 16px rgba(15,92,86,.3);transform:translateY(-1px);}
+.btn-ghost{background:none;border:1px solid var(--border);color:var(--ink);}
+.btn-ghost:hover{border-color:var(--ink);transform:translateY(-1px);}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.tag{display:inline-block;background:var(--teal-dim);color:var(--teal);font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;margin:3px 4px 0 0;}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;gap:14px;flex-wrap:wrap;}
+.sechead h2{font-family:var(--disp);font-weight:600;font-size:19px;letter-spacing:-0.01em;}
+.sechead .sub{font-size:13px;color:var(--muted);margin-top:3px;}
+input, textarea, select{
+  font-family:var(--body);font-size:13.5px;padding:9px 12px;border:1px solid var(--border);
+  border-radius:8px;background:var(--paper);color:var(--ink);width:100%;
+  transition:border-color .18s,box-shadow .18s,background .18s;
+}
+input:focus, textarea:focus, select:focus{outline:none;border-color:var(--sky);box-shadow:0 0 0 3px var(--sky-dim);background:#fff;}
+label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;}
+
+/* Reusable entrance animations */
+@keyframes rise-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop-in{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.35);opacity:.6}}
+
+/* Page-level route transitions (used around <router-view> in App.vue) */
+.page-enter-active,.page-leave-active{transition:opacity .28s var(--ease-out),transform .28s var(--ease-out);}
+.page-enter-from{opacity:0;transform:translateY(10px);}
+.page-leave-to{opacity:0;transform:translateY(-6px);}
+
+/* Modal overlay/panel transitions */
+.modal-enter-active,.modal-leave-active{transition:opacity .25s var(--ease-out);}
+.modal-enter-active .panel,.modal-leave-active .panel{transition:transform .28s var(--ease-pop),opacity .25s var(--ease-out);}
+.modal-enter-from,.modal-leave-to{opacity:0;}
+.modal-enter-from .panel,.modal-leave-to .panel{transform:translateY(18px) scale(.97);opacity:0;}
+
+/* Section tab pills (secondary navigation inside a page) */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+.tab-pill{
+  padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--card);
+  font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;
+  transition:all .18s var(--ease-out);
+}
+.tab-pill:hover{border-color:var(--ink);color:var(--ink);transform:translateY(-1px);}
+.tab-pill.active{
+  background:var(--ink);color:#fff;border-color:var(--ink);
+  box-shadow:0 5px 14px rgba(20,22,31,.2);
+}
+.tab-pill .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:7px;vertical-align:middle;}
+
+/* Status pill palette */
+.statuspill{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
+.statuspill.open{background:var(--mint-dim);color:var(--mint);}
+.statuspill.draft{background:var(--border);color:var(--muted);}
+.statuspill.closed{background:var(--coral-dim);color:var(--coral);}
+.statuspill.pending{background:var(--amber-dim);color:var(--amber);}
+.statuspill.contacted{background:var(--sky-dim);color:var(--sky);}
+.statuspill.interview{background:var(--violet-dim);color:var(--violet);}
+.statuspill.hired{background:var(--mint-dim);color:var(--mint);}
+.statuspill.rejected{background:var(--coral-dim);color:var(--coral);}
+.statuspill.applied{background:var(--amber-dim);color:var(--amber);}
+
+/* Card hover lift for clickable/featured cards */
+.lift{transition:transform .2s var(--ease-out),box-shadow .2s,border-color .2s;}
+.lift:hover{transform:translateY(-3px);box-shadow:var(--shadow-pop);border-color:#ded8cb;}
+
+/* 3D tilt cards (paired with the v-tilt directive) - a soft light sweeps
+   under the cursor while the card rotates toward it. */
+.tilt-el{position:relative;overflow:hidden;box-shadow:var(--shadow-lift);}
+.tilt-el:hover{box-shadow:var(--shadow-pop);}
+.tilt-el::after{
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(circle at var(--glare-x,50%) var(--glare-y,50%),rgba(255,255,255,.35),transparent 55%);
+  opacity:var(--glare-o,0);transition:opacity .25s var(--ease-out);
+}
+
+/* Small empty-state + hint text */
+.empty{color:var(--muted);text-align:center;padding:24px;font-size:13.5px;}
+.hint{font-size:11.5px;color:var(--muted);margin-top:5px;}
+
+/* Avatar initial circles */
+.avatar-circle{
+  width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--disp);font-weight:700;font-size:13px;color:#fff;flex-shrink:0;
+}

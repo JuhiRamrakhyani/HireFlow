@@ -1,0 +1,13 @@
+{
+  "name": "hireflow-node-monorepo",
+  "private": true,
+  "workspaces": ["backend", "frontend/hireflow-web"],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend/hireflow-web\"",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend/hireflow-web"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
